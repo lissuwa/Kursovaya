@@ -124,8 +124,38 @@ class MainWindow(QMainWindow):
         self.btn = QPushButton("Решить")
         self.btn.setMinimumHeight(40)
         layout.addWidget(self.btn)
+        self.btn.clicked.connect(self.on_solve)
         
         layout.addStretch()
+        def on_solve(self):
+        try:
+            t0 = float(self.t0_input.text())
+            T = float(self.T_input.text())
+            u0 = float(self.u0_input.text())
+            n = int(self.n_input.text())
+            
+            f = create_function(self.eq_input.text())
+            
+            self.ax.clear()
+            self.ax.grid(True, linestyle="--", alpha=0.5)
+            self.ax.set_xlabel("t")
+            self.ax.set_ylabel("u(t)")
+            self.ax.set_title(f"u' = {self.eq_input.text()}")
+            
+            if self.cb_rk4.isChecked():
+                ts_rk4, us_rk4 = solve_ode(f, t0, T, u0, n, "rk4")
+                self.ax.plot(ts_rk4, us_rk4, color="blue", label="RK4")
+                
+            if self.cb_trap.isChecked():
+                ts_trap, us_trap = solve_ode(f, t0, T, u0, n, "trap")
+                self.ax.plot(ts_trap, us_trap, color="red", linestyle="--", label="Трапеций")
+                
+            self.ax.legend()
+            self.canvas.draw()
+            
+        except Exception as e:
+            print("Ошибка:", e)
+
 
 
 if __name__ == "__main__":
