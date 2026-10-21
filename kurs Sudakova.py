@@ -63,3 +63,73 @@ def solve_ode(f, t0, T, u0, n, method):
         us.append(u)
         
     return ts, us
+
+
+from PyQt6.QtWidgets import (
+    QApplication, QMainWindow, QWidget, QVBoxLayout,
+    QHBoxLayout, QLabel, QLineEdit, QPushButton,
+    QMessageBox, QCheckBox
+)
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
+from matplotlib.figure import Figure
+
+
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Курсовая работа: Задача Коши")
+        self.resize(1050, 650)
+        
+        main_widget = QWidget()
+        self.setCentralWidget(main_widget)
+        main_layout = QHBoxLayout(main_widget)
+        
+        self.figure = Figure(figsize=(6, 5))
+        self.canvas = FigureCanvasQTAgg(self.figure)
+        self.ax = self.figure.add_subplot(111)
+        main_layout.addWidget(self.canvas, stretch=2)
+        
+        panel = QWidget()
+        layout = QVBoxLayout(panel)
+        main_layout.addWidget(panel, stretch=1)
+        
+        layout.addWidget(QLabel("Уравнение f(t, u):"))
+        self.eq_input = QLineEdit("-u")
+        layout.addWidget(self.eq_input)
+        
+        layout.addWidget(QLabel("Начальное время t0:"))
+        self.t0_input = QLineEdit("0")
+        layout.addWidget(self.t0_input)
+        
+        layout.addWidget(QLabel("Конечное время T:"))
+        self.T_input = QLineEdit("5")
+        layout.addWidget(self.T_input)
+        
+        layout.addWidget(QLabel("Начальное значение u0:"))
+        self.u0_input = QLineEdit("1")
+        layout.addWidget(self.u0_input)
+        
+        layout.addWidget(QLabel("Шагов N:"))
+        self.n_input = QLineEdit("100")
+        layout.addWidget(self.n_input)
+        
+        self.cb_rk4 = QCheckBox("Метод Рунге-Кутты (RK4)")
+        self.cb_rk4.setChecked(True)
+        layout.addWidget(self.cb_rk4)
+        
+        self.cb_trap = QCheckBox("Метод Трапеций")
+        self.cb_trap.setChecked(True)
+        layout.addWidget(self.cb_trap)
+        
+        self.btn = QPushButton("Решить")
+        self.btn.setMinimumHeight(40)
+        layout.addWidget(self.btn)
+        
+        layout.addStretch()
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec())
