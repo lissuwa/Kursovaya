@@ -133,6 +133,12 @@ class MainWindow(QMainWindow):
             T = float(self.T_input.text())
             u0 = float(self.u0_input.text())
             n = int(self.n_input.text())
+            if T <= t0:
+                QMessageBox.warning(self, "Ошибка", "T должно быть больше t0")
+                return
+            if n <= 0:
+                QMessageBox.warning(self, "Ошибка", "N должно быть больше нуля")
+                return
             
             f = create_function(self.eq_input.text())
             
@@ -154,7 +160,7 @@ class MainWindow(QMainWindow):
             self.canvas.draw()
             
         except Exception as e:
-            print("Ошибка:", e)
+            QMessageBox.critical(self, "Ошибка", f"Что-то пошло не так:\n{str(e)}")
 
 
 
