@@ -87,6 +87,9 @@ class MainWindow(QMainWindow):
         self.figure = Figure(figsize=(6, 5))
         self.canvas = FigureCanvasQTAgg(self.figure)
         self.ax = self.figure.add_subplot(111)
+        self.ax.grid(True, linestyle="--", alpha=0.5)
+        self.ax.set_xlabel("t")
+        self.ax.set_ylabel("u(t)")
         main_layout.addWidget(self.canvas, stretch=2)
         
         panel = QWidget()
