@@ -130,7 +130,8 @@ class MainWindow(QMainWindow):
         self.btn.clicked.connect(self.on_solve)
         
         layout.addStretch()
-        def on_solve(self):
+        
+    def on_solve(self):
         try:
             t0 = float(self.t0_input.text())
             T = float(self.T_input.text())
